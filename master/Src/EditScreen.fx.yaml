@@ -1139,6 +1139,7 @@ EditScreen As screen:
                     Accept_Decline:RFERecord.Accept_Decline.Value
             })
         Text: ="runflow"
+        Visible: =false
         X: =91
         Y: =697
         ZIndex: =13
