@@ -1,0 +1,162 @@
+ConfirmationScreen As screen:
+    OnVisible: |+
+        =//Set(mailbody,"<span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id="& RFEId &"'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>?id="& RFEId &"</span></a></span>")
+        Set(
+            mailbody,
+            "<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta http-equiv=Content-Type content='text/html; charset=us-ascii'><meta name=Generator content='Microsoft Word 15 (filtered medium)'><style><!--
+        /* Font Definitions */
+        @font-face
+        	{font-family:'Cambria Math';
+        	panose-1:2 4 5 3 5 4 6 3 2 4;}
+        @font-face
+        	{font-family:Calibri;
+        	panose-1:2 15 5 2 2 2 4 3 2 4;}
+        /* Style Definitions */
+        p.MsoNormal, li.MsoNormal, div.MsoNormal
+        	{margin:0in;
+        	font-size:11.0pt;
+        	font-family:'Calibri',sans-serif;}
+        p.MsoIntenseQuote, li.MsoIntenseQuote, div.MsoIntenseQuote
+        	{mso-style-priority:30;
+        	mso-style-link:'Intense Quote Char';
+        	margin-top:.25in;
+        	margin-right:.6in;
+        	margin-bottom:.25in;
+        	margin-left:.6in;
+        	text-align:center;
+        	border:none;
+        	padding:0in;
+        	font-size:11.0pt;
+        	font-family:'Calibri',sans-serif;
+        	color:#4472C4;
+        	font-style:italic;}
+        span.EmailStyle20
+        	{mso-style-type:personal-compose;
+        	font-family:'Calibri',sans-serif;
+        	color:windowtext;}
+        span.IntenseQuoteChar
+        	{mso-style-name:'Intense Quote Char';
+        	mso-style-priority:30;
+        	mso-style-link:'Intense Quote';
+        	font-family:'Calibri',sans-serif;
+        	color:#4472C4;
+        	font-style:italic;}
+        .MsoChpDefault
+        	{mso-style-type:export-only;
+        	font-size:10.0pt;}
+        @page WordSection1
+        	{size:8.5in 11.0in;
+        	margin:1.0in 1.0in 1.0in 1.0in;}
+        div.WordSection1
+        	{page:WordSection1;}
+        --></style><!--[if gte mso 9]><xml>
+        <o:shapedefaults v:ext='edit' spidmax='1026' />
+        </xml><![endif]--><!--[if gte mso 9]><xml>
+        <o:shapelayout v:ext='edit'>
+        <o:idmap v:ext='edit' data='1' />
+        </o:shapelayout></xml><![endif]--></head><body lang=EN-US link='#0563C1' vlink='#954F72' style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p>&nbsp;</o:p></p><div style='mso-element:para-border-div;border-top:solid #4472C4 1.0pt;border-left:none;border-bottom:solid #4472C4 1.0pt;border-right:none;padding:10.0pt 0in 10.0pt 0in;margin-left:.6in;margin-right:.6in'><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>An RFE has been open by : " & varItem.Requestor & "  <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Case number is: " & varItem.Case & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Application is: " & varItem.app & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>This is a: " & varItem.EscalationType & " Issue<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The customer is located in : " & varItem.Region & " <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>And the preferred language is: " & varItem.language & " <o:p></o:p></p>
+        <span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id=" & RFEId & "'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>&id=" & RFEId & "</span></a></span>
+        </div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>"
+        );
+        //Office365Outlook.SendEmailV2("PoweEsc@microsoft.com","RFE request for: " & varItem.Case, mailbody);
+        //Office365Outlook.SendEmailV2("PoweEsc@microsoft.com","ignore, working on app", mailbody);
+        
+
+    header_1 As header:
+        background: =ColorPalette.color5
+        DestinationScreen: =HomeScreen
+        Fill: =header_1.background
+        headerText: ="Confirmation"
+        headShot: =varUser.Image
+
+    footer_4 As footer:
+        Fill: =footer_4.footerFill
+        footerFill: =ColorPalette.color5
+        Width: =footer_4.footerWidth
+        Xfooter: =1200
+        Y: =668
+
+    HtmlText1_1 As htmlViewer:
+        Height: =524
+        HtmlText: |-
+            ="<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta http-equiv=Content-Type content='text/html; charset=us-ascii'><meta name=Generator content='Microsoft Word 15 (filtered medium)'><style><!--
+            /* Font Definitions */
+            @font-face
+            	{font-family:'Cambria Math';
+            	panose-1:2 4 5 3 5 4 6 3 2 4;}
+            @font-face
+            	{font-family:Calibri;
+            	panose-1:2 15 5 2 2 2 4 3 2 4;}
+            /* Style Definitions */
+            p.MsoNormal, li.MsoNormal, div.MsoNormal
+            	{margin:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoIntenseQuote, li.MsoIntenseQuote, div.MsoIntenseQuote
+            	{mso-style-priority:30;
+            	mso-style-link:'Intense Quote Char';
+            	margin-top:.25in;
+            	margin-right:.6in;
+            	margin-bottom:.25in;
+            	margin-left:.6in;
+            	text-align:center;
+            	border:none;
+            	padding:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            span.EmailStyle20
+            	{mso-style-type:personal-compose;
+            	font-family:'Calibri',sans-serif;
+            	color:windowtext;}
+            span.IntenseQuoteChar
+            	{mso-style-name:'Intense Quote Char';
+            	mso-style-priority:30;
+            	mso-style-link:'Intense Quote';
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            .MsoChpDefault
+            	{mso-style-type:export-only;
+            	font-size:10.0pt;}
+            @page WordSection1
+            	{size:8.5in 11.0in;
+            	margin:1.0in 1.0in 1.0in 1.0in;}
+            div.WordSection1
+            	{page:WordSection1;}
+            --></style><!--[if gte mso 9]><xml>
+            <o:shapedefaults v:ext='edit' spidmax='1026' />
+            </xml><![endif]--><!--[if gte mso 9]><xml>
+            <o:shapelayout v:ext='edit'>
+            <o:idmap v:ext='edit' data='1' />
+            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link='#0563C1' vlink='#954F72' style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p>&nbsp;</o:p></p><div style='mso-element:para-border-div;border-top:solid #4472C4 1.0pt;border-left:none;border-bottom:solid #4472C4 1.0pt;border-right:none;padding:10.0pt 0in 10.0pt 0in;margin-left:.6in;margin-right:.6in'><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>An RFE has been open by : " & varItem.Requestor & "  <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Case number is: " & varItem.Case & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Application is: " & varItem.app & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>This is a: " & varItem.EscalationType & " Issue<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The customer is located in : " & varItem.Region & " <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>And the preferred language is: " & varItem.language & " <o:p></o:p></p>
+            <span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id=" & RFEId & "'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>?id=" & RFEId & "</span></a></span>
+            </div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>"
+        Width: =1205
+        X: =80
+        Y: =244
+        ZIndex: =2
+
+    Label2 As label:
+        Align: =Center
+        FontWeight: =Bold
+        Height: =115
+        Size: =20
+        Text: ="Thank you for your RFE submission!"
+        Width: =882
+        X: =175
+        Y: =152
+        ZIndex: =3
+
+    Timer1 As timer:
+        AutoStart: =true
+        Duration: =5000
+        OnTimerEnd: |-
+            =//Office365Outlook.SendEmailV2("PoweEsc@microsoft.com","RFE request for: " & varItem.Case, mailbody)
+            false
+        Visible: =false
+        X: =1003
+        Y: =152
+        ZIndex: =4
+

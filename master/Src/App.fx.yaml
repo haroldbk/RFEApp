@@ -1,0 +1,105 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |-
+        =/*The startup is used to collect Admins. It's hard coded here but I would prefer to use something like an Excel static connection and read that.
+        this will allow admins to be added or removed without editing the app.
+        Set a Variable to the user()
+        Get evalute the user against the admin list and could a count. If 1, then we know it's an administrator.
+        
+        When an RFE is accepted a flow is triggered to send an email to the group that would accept the RFE.
+        This is the flow url https://preview.flow.microsoft.com/manage/environments/839eace6-59ab-4243-97ec-a5b8fcc104e4/flows/47c5c3c1-cf3e-434b-8ae7-d9feed197457
+        
+        9/24/2021 changed the data source to https://microsoft.sharepoint.com/teams/GlobalPowerPlatforms/Lists/RFE
+        10/13/2021 remove Chris Coto and added Paola Hernandez Cordova  to the escalation list in the Excel sheet.
+        =====================
+        */
+        // link to Excel list https://microsoft.sharepoint.com/:x:/t/GlobalPlatformTeam/EVXWr0nj5fpBjJAmFBVEJXoBu9H3aJIuAj9pLMnlP_cT2w?e=teTnSf
+        //file name Adminlist.xlsx location https://microsoft.sharepoint.com/teams/GlobalPlatformTeam/Shared%20Documents/
+        Collect(colAdmin, Table1);
+        
+        /*Collect(
+            colAdmin,
+            {Name: "Doug Verona"},
+            {Name: "Harold Kless"},
+            {Name: "Taylor Skare"},
+            {Name: "Red Hodgerson"},
+            {Name: "Tom Jeffries"},
+            {Name: "Yader Morales Lopez"},
+            {Name: "Christopher Sanchez Coto"},
+            {Name: "Yeiner Lopez"}
+        );*/
+        Set(
+            varUser,
+            User()
+        );
+        Set(
+            varAdmin,
+            CountRows(
+                Filter(
+                    colAdmin,
+                    Name = varUser.FullName
+                )
+            )
+        );
+        /*
+        is the user is an Admin then create a collection of all RFE records, If the user is not Admin then only display their RFEs
+        */
+        If(
+            varAdmin > 0,
+            ClearCollect(
+                colRecords,
+                RFE
+            ),
+            ClearCollect(
+                colRecords,
+                Filter(
+                    RFE,
+                    Requester.DisplayName = varUser.FullName
+                )
+            )
+        );
+        //Create a customer color palette
+        Set(
+            ColorPalette,
+            {
+                color1: RGBA(
+                    212,
+                    244,
+                    221,
+                    1
+                ),
+                color2: RGBA(
+                    214,
+                    34,
+                    70,
+                    1
+                ),
+                color3: RGBA(
+                    75,
+                    29,
+                    63,
+                    1
+                ),
+                color4: RGBA(
+                    14,
+                    124,
+                    123,
+                    1
+                ),
+                color5: RGBA(
+                    23,
+                    190,
+                    187,
+                    1
+                )
+            }
+        );
+        //checks if the app is opened from a link  from a submission it will navigate to the specific form with the data 
+        If(
+            Value(Param("id")) > 0,
+            EditForm(Form3);
+            Navigate(EditScreen)
+        )
+        
+        //If( Value(Param( "id"))> 0, EditForm(Form3); EditScreen )
+

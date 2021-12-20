@@ -1,0 +1,77 @@
+WelcomeScreen As screen:
+    Fill: =ColorPalette.color1
+
+    header_3 As header:
+        background: =ColorPalette.color4
+        Fill: =header_3.background
+        headerText: ="RFE"
+        headShot: =varUser.Image
+        iconVisible: =false
+
+    footer_1 As footer:
+        Fill: =footer_1.footerFill
+        footerFill: =ColorPalette.color1
+        Width: =footer_1.footerWidth
+        Y: =668
+
+    HtmlText2_5 As htmlViewer:
+        Height: =107
+        HoverBorderColor: =HtmlText2_5.BorderColor
+        HtmlText: |-
+            ="<div style='margin:10px;width:420px;height:70px;background: #ff0000;text-align:center; vertical-align:middle;font-size: 20px; font-weight: bold;
+            background: radial-gradient(circle farthest-corner at center center, #17BEBB 0%, #D4F4DD 80%);
+            background: -webkit-radial-gradient(circle farthest-corner at center center, 0%, #D4F4DD 80%);
+            background: -moz-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);box-shadow:0 3px 6px 1px  #cc; border-radius:15px'>" & "Submit New RFE"  &"</div>"
+        OnSelect: |-
+            =NewForm(Form3);
+            Navigate(EditScreen,ScreenTransition.Fade)
+        PressedBorderColor: =HtmlText2_5.BorderColor
+        Width: =478
+        X: =388
+        Y: =196
+        ZIndex: =2
+
+    HtmlText2_6 As htmlViewer:
+        Height: =107
+        HoverBorderColor: =HtmlText2_6.BorderColor
+        HtmlText: |-
+            ="<div style='margin:10px;width:420px;height:70px;background: #ff0000;text-align:center; vertical-align:middle;font-size: 20px; font-weight: bold;
+            background: radial-gradient(circle farthest-corner at center center, #17BEBB 0%, #D4F4DD 80%);
+            background: -webkit-radial-gradient(circle farthest-corner at center center, 0%, #D4F4DD 80%);
+            background: -moz-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);box-shadow:0 3px 6px 1px  #cc; border-radius:15px'>" & "Review submitted RFEs"  &"</div>"
+        OnSelect: =Navigate(HomeScreen,ScreenTransition.Fade)
+        PressedBorderColor: =HtmlText2_6.BorderColor
+        Width: =478
+        X: =388
+        Y: =380
+        ZIndex: =3
+
+    Label12 As label:
+        AutoHeight: =true
+        BorderThickness: =1
+        Height: =208
+        Text: |-
+            ="August 2021:" & Char(13) & 
+            "_______________________________" & Char(13) & Char(13) & 
+            "Added a link to the case in DFM" &
+            " The link will open the DFM Search Window" & Char(13) &
+            "Be sure that this browser session is logged into DFM" & Char(13) & 
+            "_______________________________" & Char(13) & Char(13) & 
+            "if you run into errors, please using the Feedback button" & Char(13) &
+            "_________________________" & Char(13) & Char(13) & 
+            "October 7, 2021: " & Char(13) & 
+            "Added the default user to be the logged in user." & Char(13) &
+            "if the logged in user is not the requestor, please add the requestor"
+        Width: =387
+        X: =960
+        Y: =184
+        ZIndex: =4
+
+    Label13 As label:
+        FontWeight: =Semibold
+        Text: |-
+            ="Release notes:"
+        X: =960
+        Y: =144
+        ZIndex: =5
+

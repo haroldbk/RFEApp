@@ -1,0 +1,38 @@
+BoxShadow As CanvasComponent:
+    Action: =App.ActiveScreen
+    backgroundColor: =RGBA(0, 0, 0, 1)
+    ButtonText: ="click here"
+    Fill: =BoxShadow.backgroundColor
+    Height: =300
+    OnClick: ="Text"
+    Width: =400
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    HtmlText2_1 As htmlViewer:
+        Height: =218
+        HoverBorderColor: =HtmlText2_1.BorderColor
+        HtmlText: |-
+            ="<div style='margin:10px;width:185px;height:175px;background: #ff0000;text-align:center; vertical-align:middle;font-size: 40px; font-weight: bold;
+            background: radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);
+            background: -webkit-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);
+            background: -moz-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);box-shadow:0 3px 6px 1px  #cc; border-radius:15px'>" & "Testing"  &"</div>"
+        OnSelect: |-
+            =//Navigate(BoxShadow.Action)
+            BoxShadow.OnClick
+        PressedBorderColor: =HtmlText2_1.BorderColor
+        Width: =283
+        X: =21
+        ZIndex: =1
+
+    TextInput4 As text:
+        Default: ="Text input"
+        FocusedBorderColor: =TextInput4.BorderColor
+        PressedBorderColor: =TextInput4.HoverBorderColor
+        PressedColor: =TextInput4.Color
+        PressedFill: =TextInput4.Fill
+        X: =40
+        Y: =240
+        ZIndex: =2
+

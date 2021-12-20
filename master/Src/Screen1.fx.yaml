@@ -1,0 +1,11 @@
+Screen1 As screen:
+
+    Send_flow As button:
+        OnSelect: ='AcknowledgeRFEAcceptance-2'.Run(jsonAcknowledge)
+        PressedColor: =DarkRed
+        PressedFill: =Red
+        Text: ="send flowbot"
+        X: =372
+        Y: =540
+        ZIndex: =2
+

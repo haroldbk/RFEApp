@@ -1,0 +1,1353 @@
+EditScreen As screen:
+    OnVisible: =Set(varAccept,false)
+
+    Component1_2 As header:
+        background: =AliceBlue
+        DestinationScreen: =HomeScreen
+        Fill: =Component1_1.background
+        headerText: ="New RFE"
+        headShot: =varUser.Image
+
+    footer_3 As footer:
+        Fill: =footer_3.footerFill
+        footerFill: =ColorPalette.color1
+        Width: =footer_3.footerWidth
+        Xfooter: =1200
+        Y: =668
+
+    Form3 As form:
+        BorderColor: =ColorPalette.color4
+        BorderThickness: =2
+        DataSource: =RFE
+        Height: =549
+        Item: |+
+            =LookUp(RFE,ID=Value(Param("id")))
+            
+        OnSuccess: |+
+            =//this gets the ID of the last submitted record
+            //but it should be combined with RFERecord - 
+            //TODO 
+            Set(
+                RFEId,
+                Form3.LastSubmit.ID
+            );
+            Set(RFERecord, Form3.LastSubmit);
+            If(
+                //this is a new record 
+               Or(
+               IsBlank(Param("id")),
+               IsBlank(DataCardValue44)),
+                   Refresh(RFE);
+                ClearCollect(
+                colRecords,
+                RFE);
+                //-----------------
+                //debug check-
+                //Notify(Text(DataCardValue14.Value), NotificationType.Information)
+                //------------------
+                Navigate(
+                    ConfirmationScreen,
+                   ScreenTransition.Cover
+                )
+                ,
+                // this is an edited record where the RFE is Accepted/Declined. (I hope!)
+                //TODO add some logic to allow for rejection and probably verify that RFE is Accepted. 
+                Select(RunFlow);
+            //Notify("flow called",NotificationType.Information);
+                Refresh(RFE);
+                ClearCollect(
+                colRecords,
+                RFE);
+            
+                Trace("request made",TraceSeverity.Information,{ Requester: RFERecord.Requester.DisplayName,
+                    RequesterEmail: RFERecord.Requester.Email,
+                    Case: RFERecord.Title,
+                    submittedDate: RFERecord.Created
+                    });
+                Navigate(
+                    HomeScreen,
+                    ScreenTransition.Fade
+                ))
+            
+            
+        SnapToColumns: =false
+        Width: =1001
+        Y: =119
+        ZIndex: =3
+
+        Title_DataCard1 As typedDataCard.textualEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Title"
+            Default: =ThisItem.Title
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Title"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            MaxLength: =DataSourceInfo([@RFE], DataSourceInfo.MaxLength, "Title")
+            Required: =true
+            Update: =DataCardValue5.Text
+            Width: =249
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            DataCardKey5 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: |-
+                    =//Parent.DisplayName
+                    "Case Number"
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue5 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                Default: =Parent.Default
+                DelayOutput: =true
+                DisplayMode: =Parent.DisplayMode
+                MaxLength: =Parent.MaxLength
+                PaddingLeft: =5
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Tooltip: =Parent.DisplayName
+                Width: =208
+                X: =30
+                Y: =DataCardKey5.Y + DataCardKey5.Height + 5
+                ZIndex: =2
+
+            ErrorMessage3 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue5.Y + DataCardValue5.Height
+                ZIndex: =3
+
+            StarVisible3 As label:
+                Align: =Align.Center
+                Height: =DataCardKey5.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey5.Y
+                ZIndex: =4
+
+        Application_DataCard1 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Application"
+            Default: =ThisItem.Application
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Application"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue18.Selected
+            Width: =249
+            X: =1
+            Y: =0
+            ZIndex: =1
+
+            DataCardKey18 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue18 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["Value"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].Application)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["Value"]
+                SearchItems: =Choices(RFE.Application,DataCardValue18.SearchText)
+                SelectMultiple: =false
+                Tooltip: =Parent.DisplayName
+                Width: =212
+                X: =30
+                Y: =DataCardKey18.Y + DataCardKey18.Height + 5
+                ZIndex: =2
+
+            ErrorMessage14 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue18.Y + DataCardValue18.Height
+                ZIndex: =3
+
+            StarVisible14 As label:
+                Align: =Align.Center
+                Height: =DataCardKey18.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey18.Y
+                ZIndex: =4
+
+        CaseTitle_DataCard1 As typedDataCard.textualEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="CaseTitle"
+            Default: =ThisItem.CaseTitle
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="CaseTitle"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =114
+            MaxLength: =DataSourceInfo([@RFE], DataSourceInfo.MaxLength, "CaseTitle")
+            Required: =false
+            Update: =DataCardValue11.Text
+            Width: =498
+            X: =2
+            Y: =0
+            ZIndex: =1
+
+            DataCardKey11 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue11 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                Default: =Parent.Default
+                DelayOutput: =true
+                DisplayMode: =Parent.DisplayMode
+                EnableSpellCheck: =true
+                Height: =50
+                MaxLength: =Parent.MaxLength
+                Mode: =TextMode.MultiLine
+                PaddingLeft: =5
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =If(Len(Self.Text)<29,13,If(Len(Self.Text)>=71,8,10))
+                Tooltip: =Parent.DisplayName
+                Width: =412
+                X: =30
+                Y: =DataCardKey11.Y + DataCardKey11.Height + 5
+                ZIndex: =2
+
+            ErrorMessage7 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue11.Y + DataCardValue11.Height
+                ZIndex: =3
+
+            StarVisible7 As label:
+                Align: =Align.Center
+                Height: =DataCardKey11.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey11.Y
+                ZIndex: =4
+
+        EscalationType_DataCard1 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="EscalationType"
+            Default: =ThisItem.EscalationType
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="EscalationType"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue17.Selected
+            Width: =333
+            X: =0
+            Y: =1
+            ZIndex: =1
+
+            DataCardKey17 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue17 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                ChevronFill: =ColorPalette.color1
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["Value"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].EscalationType)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["Value"]
+                SearchItems: =Choices(RFE.EscalationType,DataCardValue17.SearchText)
+                SelectMultiple: =false
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey17.Y + DataCardKey17.Height + 5
+                ZIndex: =2
+
+            ErrorMessage13 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =60
+                Y: =34
+                ZIndex: =3
+
+            StarVisible13 As label:
+                Align: =Align.Center
+                Height: =DataCardKey17.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey17.Y
+                ZIndex: =4
+
+        Requester_DataCard1 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Requester"
+            Default: =ThisItem.Requester
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Requester"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =99
+            Required: =false
+            Update: =DataCardValue10.Selected
+            Width: =333
+            X: =1
+            Y: =1
+            ZIndex: =1
+
+            DataCardKey10 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue10 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: |-
+                    =//if the Param("id") is blank then set the default to the User, other wise set the default to the parent
+                    If(IsBlank(Param("id")),
+                    LookUp(RFE,Requester.DisplayName=User().FullName).Requester,
+                    Parent.Default)
+                DisplayFields: =["DisplayName","Email","Picture"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].Requester)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["DisplayName"]
+                SearchItems: =Choices(RFE.Requester,DataCardValue10.SearchText)
+                SelectMultiple: =false
+                Template: =ListItemTemplate.Person
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+                ZIndex: =2
+
+            ErrorMessage6 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue10.Y + DataCardValue10.Height
+                ZIndex: =3
+
+            StarVisible6 As label:
+                Align: =Align.Center
+                Height: =DataCardKey10.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey10.Y
+                ZIndex: =4
+
+        "'Support Region_DataCard1' As typedDataCard.comboBoxEditCard":
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="SupportRegion"
+            Default: =ThisItem.'Support Region'
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Support Region"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue12.Selected
+            Width: =333
+            X: =2
+            Y: =1
+            ZIndex: =1
+
+            DataCardKey12 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue12 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["Value"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].'Support Region')
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["Value"]
+                SearchItems: =Choices(RFE.'Support Region',DataCardValue12.SearchText)
+                SelectMultiple: =false
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey12.Y + DataCardKey12.Height + 5
+                ZIndex: =2
+
+            ErrorMessage8 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue12.Y + DataCardValue12.Height
+                ZIndex: =3
+
+            StarVisible8 As label:
+                Align: =Align.Center
+                Height: =DataCardKey12.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey12.Y
+                ZIndex: =4
+
+        Language_DataCard1 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Language"
+            Default: =ThisItem.Language
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Language"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue13.Selected
+            Width: =333
+            X: =0
+            Y: =2
+            ZIndex: =1
+
+            DataCardKey13 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue13 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["Value"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].Language)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["Value"]
+                SearchItems: =Choices(RFE.Language,DataCardValue13.SearchText)
+                SelectMultiple: =false
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey13.Y + DataCardKey13.Height + 5
+                ZIndex: =2
+
+            ErrorMessage9 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue13.Y + DataCardValue13.Height
+                ZIndex: =3
+
+            StarVisible9 As label:
+                Align: =Align.Center
+                Height: =DataCardKey13.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey13.Y
+                ZIndex: =4
+
+        Accept_Decline_DataCard4 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Accept_Decline"
+            Default: =ThisItem.Accept_Decline
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Accept_Decline"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue44.Selected
+            Width: =333
+            X: =1
+            Y: =2
+            ZIndex: =1
+
+            DataCardKey44 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue44 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["Value"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].Accept_Decline)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["Value"]
+                SearchItems: =Choices(RFE.Accept_Decline,DataCardValue44.SearchText)
+                SelectMultiple: =false
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey44.Y + DataCardKey44.Height + 5
+                ZIndex: =2
+
+            ErrorMessage45 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue44.Y + DataCardValue44.Height
+                ZIndex: =3
+
+            StarVisible45 As label:
+                Align: =Align.Center
+                Height: =DataCardKey44.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey44.Y
+                ZIndex: =4
+
+        AcceptedBy_DataCard2 As typedDataCard.comboBoxEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="AcceptedBy"
+            Default: =ThisItem.AcceptedBy
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="AcceptedBy"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue15.Selected
+            Visible: =If(varAdmin>0,true,false)
+            Width: =333
+            WidthFit: =false
+            X: =2
+            Y: =2
+            ZIndex: =1
+
+            DataCardKey15 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue15 As combobox:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DefaultSelectedItems: =Parent.Default
+                DisplayFields: =["DisplayName","Email","Picture"]
+                DisplayMode: =Parent.DisplayMode
+                Items: =Choices([@RFE].AcceptedBy)
+                OnChange: =Set(varAccept,true)
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                SearchFields: =["DisplayName"]
+                SearchItems: =Choices(RFE.AcceptedBy,DataCardValue15.SearchText)
+                SelectMultiple: =false
+                Template: =ListItemTemplate.Person
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey15.Y + DataCardKey15.Height + 5
+                ZIndex: =2
+
+            ErrorMessage11 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue15.Y + DataCardValue15.Height
+                ZIndex: =3
+
+            StarVisible11 As label:
+                Align: =Align.Center
+                Height: =DataCardKey15.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey15.Y
+                ZIndex: =4
+
+        AcceptedDate_DataCard2 As typedDataCard.dateEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="AcceptedDate"
+            Default: =ThisItem.AcceptedDate
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="AcceptedDate"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue16.SelectedDate
+            Visible: =If(varAdmin>0,true,false)
+            Width: =249
+            X: =0
+            Y: =3
+            ZIndex: =1
+
+            DataCardKey16 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue16 As datepicker:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DisplayMode: =Parent.DisplayMode
+                EndYear: =Year(Today())+100
+                IsEditable: =true
+                PaddingBottom: =0
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                StartYear: =1899
+                Tooltip: =Parent.DisplayName
+                Width: =189
+                X: =30
+                Y: =DataCardKey16.Y + DataCardKey16.Height + 5
+                ZIndex: =2
+
+            ErrorMessage12 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue16.Y + DataCardValue16.Height
+                ZIndex: =3
+
+            StarVisible12 As label:
+                Align: =Align.Center
+                Height: =DataCardKey16.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey16.Y
+                ZIndex: =4
+
+        "'GCC/Restricted_DataCard2' As typedDataCard.toggleEditCard":
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="GCC_x002f_Restricted"
+            Default: =ThisItem.'GCC/Restricted'
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="GCC/Restricted"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =144
+            Required: =false
+            Update: =DataCardValue20.Value
+            Width: =166
+            X: =1
+            Y: =3
+            ZIndex: =1
+
+            DataCardKey20 As label:
+                AutoHeight: =true
+                Height: =34
+                Size: =10
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue20 As toggleSwitch:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                Default: =Parent.Default
+                DisplayMode: =Parent.DisplayMode
+                FalseText: ="No"
+                Tooltip: =Parent.DisplayName
+                TrueText: ="Yes"
+                X: =30
+                Y: =DataCardKey20.Y + DataCardKey20.Height + 5
+                ZIndex: =2
+
+            ErrorMessage5 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue20.Y + DataCardValue20.Height
+                ZIndex: =3
+
+            StarVisible5 As label:
+                Align: =Align.Center
+                Height: =DataCardKey20.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey20.Y
+                ZIndex: =4
+
+        Technical_Blocker_DataCard2 As typedDataCard.textualEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Technical_Blocker"
+            Default: =ThisItem.Technical_Blocker
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: ="Technical_Blocker"
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =181
+            MaxLength: =DataSourceInfo([@RFE], DataSourceInfo.MaxLength, "Technical_Blocker")
+            Required: =false
+            Update: =DataCardValue2.Text
+            Width: =581
+            X: =2
+            Y: =3
+            ZIndex: =1
+
+            DataCardKey2 As label:
+                AutoHeight: =true
+                Height: =34
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue2 As text:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                Default: =Parent.Default
+                DelayOutput: =true
+                DisplayMode: =Parent.DisplayMode
+                Height: =132
+                MaxLength: =Parent.MaxLength
+                PaddingLeft: =5
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey2.Y + DataCardKey2.Height + 5
+                ZIndex: =2
+
+            ErrorMessage10 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue2.Y + DataCardValue2.Height
+                ZIndex: =3
+
+            StarVisible10 As label:
+                Align: =Align.Center
+                Height: =DataCardKey2.Height
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey2.Y
+                ZIndex: =4
+
+    Toggle1 As toggleSwitch:
+        FalseFill: =ColorPalette.color2
+        FalseText: ="No Escalation log in case "
+        Height: =50
+        OnCheck: =Set(varAgree,true)
+        Size: =11
+        TrueFill: =ColorPalette.color3
+        TrueText: ="Yes,Escalation log is in the case"
+        Width: =319
+        X: =1020
+        Y: =184
+        ZIndex: =4
+
+    Label4 As label:
+        BorderColor: =RGBA(246, 88, 16, 1)
+        BorderStyle: =Dashed
+        BorderThickness: =2
+        Color: =RGBA(151, 0, 0, 1)
+        Height: =46
+        Text: ="Please verify that there is an escalation log in the case"
+        Visible: =If(Toggle1.Value=true,false, true)
+        Width: =330
+        X: =1009
+        Y: =122
+        ZIndex: =5
+
+    HtmlText2_3 As htmlViewer:
+        Height: =101
+        HoverBorderColor: =HtmlText2_3.BorderColor
+        HtmlText: |-
+            ="<div style='margin:10px;width:120px;height:70px;background: #ff0000;text-align:center; vertical-align:middle;font-size: 20px; font-weight: bold;
+            background: radial-gradient(circle farthest-corner at center center, #17BEBB 0%, #D4F4DD 80%);
+            background: -webkit-radial-gradient(circle farthest-corner at center center, 0%, #D4F4DD 80%);
+            background: -moz-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);box-shadow:0 3px 6px 1px  #cc; border-radius:15px'>" & "View Case"  &"</div>"
+        OnSelect: |-
+            =//Launch("https://servicedesk.microsoft.com/#/customer/cases?caseNumber=" & DataCardValue5.Text)
+            LaunchTarget.Replace  ;
+            Launch("https://onesupport.crm.dynamics.com/main.aspx?appid=101acb62-8d00-eb11-a813-000d3a8b3117&pagetype=search&searchText=" & DataCardValue5.Text );
+        PressedBorderColor: =HtmlText2_3.BorderColor
+        Width: =156
+        X: =1009
+        Y: =543
+        ZIndex: =6
+
+    Button4 As button:
+        OnSelect: |-
+            =Set(
+                varItem,
+                {
+                    Case: DataCardValue5.Text,
+                    app: DataCardValue18.Selected.Value,
+                    Requestor: DataCardValue10.Selected.DisplayName,
+                    CaseTitle: DataCardValue11.Text,
+                    language: DataCardValue13.Selected.Value,
+                    Region: DataCardValue12.Selected.Value,
+                    EscalationType: DataCardValue17.Selected.Value
+                        }
+            );
+            
+            //Set(mailbody,"<span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id="& RFEId &"'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>?id="& RFEId &"</span></a></span>")
+        Text: ="Button"
+        Visible: =false
+        X: =936
+        Y: =672
+        ZIndex: =7
+
+    Label9 As label:
+        AutoHeight: =true
+        Color: =ColorPalette.color1
+        Fill: =ColorPalette.color3
+        Height: =56
+        Size: =11
+        Text: ="This must be Yes in order to submit an RFE"
+        Width: =327
+        X: =1016
+        Y: =252
+        ZIndex: =8
+
+    HtmlText2 As htmlViewer:
+        Height: =172
+        HtmlText: |-
+            ="<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta http-equiv=Content-Type content='text/html; charset=us-ascii'><meta name=Generator content='Microsoft Word 15 (filtered medium)'><style><!--
+            /* Font Definitions */
+            @font-face
+            	{font-family:'Cambria Math';
+            	panose-1:2 4 5 3 5 4 6 3 2 4;}
+            @font-face
+            	{font-family:Calibri;
+            	panose-1:2 15 5 2 2 2 4 3 2 4;}
+            /* Style Definitions */
+            p.MsoNormal, li.MsoNormal, div.MsoNormal
+            	{margin:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoIntenseQuote, li.MsoIntenseQuote, div.MsoIntenseQuote
+            	{mso-style-priority:30;
+            	mso-style-link:'Intense Quote Char';
+            	margin-top:.25in;
+            	margin-right:.6in;
+            	margin-bottom:.25in;
+            	margin-left:.6in;
+            	text-align:center;
+            	border:none;
+            	padding:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            span.EmailStyle20
+            	{mso-style-type:personal-compose;
+            	font-family:'Calibri',sans-serif;
+            	color:windowtext;}
+            span.IntenseQuoteChar
+            	{mso-style-name:'Intense Quote Char';
+            	mso-style-priority:30;
+            	mso-style-link:'Intense Quote';
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            .MsoChpDefault
+            	{mso-style-type:export-only;
+            	font-size:10.0pt;}
+            @page WordSection1
+            	{size:8.5in 11.0in;
+            	margin:1.0in 1.0in 1.0in 1.0in;}
+            div.WordSection1
+            	{page:WordSection1;}
+            --></style><!--[if gte mso 9]><xml>
+            <o:shapedefaults v:ext='edit' spidmax='1026' />
+            </xml><![endif]--><!--[if gte mso 9]><xml>
+            <o:shapelayout v:ext='edit'>
+            <o:idmap v:ext='edit' data='1' />
+            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link='#0563C1' vlink='#954F72' style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p>&nbsp;</o:p></p><div style='mso-element:para-border-div;border-top:solid #4472C4 1.0pt;border-left:none;border-bottom:solid #4472C4 1.0pt;border-right:none;padding:10.0pt 0in 10.0pt 0in;margin-left:.6in;margin-right:.6in'><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>An RFE has been open by : " & Form3.LastSubmit.Requester.DisplayName & "  <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Case number is: " & Form3.LastSubmit.Title & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Application is: " & Form3.LastSubmit.Application.Value & "<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>This is a: " & Form3.LastSubmit.EscalationType.Value & " Issue<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The customer is located in : " & Form3.LastSubmit.'Support Region'.Value & " <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>And the preferred language is: " & Form3.LastSubmit.Language.Value & " <o:p></o:p></p>
+            <span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id=" & RFEId & "'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>?id=" & RFEId & "</span></a></span>
+            </div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>"
+        Visible: =false
+        Width: =385
+        X: =957
+        Y: =596
+        ZIndex: =9
+
+    SendMail As button:
+        OnSelect: |-
+            =Office365Outlook.SendEmailV2("haroldk@microsoft.com","RFE Opened for Case: " & DataCardValue5.Text, "<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta http-equiv=Content-Type content='text/html; charset=us-ascii'><meta name=Generator content='Microsoft Word 15 (filtered medium)'><style><!--
+            /* Font Definitions */
+            @font-face
+            	{font-family:'Cambria Math';
+            	panose-1:2 4 5 3 5 4 6 3 2 4;}
+            @font-face
+            	{font-family:Calibri;
+            	panose-1:2 15 5 2 2 2 4 3 2 4;}
+            /* Style Definitions */
+            p.MsoNormal, li.MsoNormal, div.MsoNormal
+            	{margin:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoIntenseQuote, li.MsoIntenseQuote, div.MsoIntenseQuote
+            	{mso-style-priority:30;
+            	mso-style-link:'Intense Quote Char';
+            	margin-top:.25in;
+            	margin-right:.6in;
+            	margin-bottom:.25in;
+            	margin-left:.6in;
+            	text-align:center;
+            	border:none;
+            	padding:0in;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            span.EmailStyle20
+            	{mso-style-type:personal-compose;
+            	font-family:'Calibri',sans-serif;
+            	color:windowtext;}
+            span.IntenseQuoteChar
+            	{mso-style-name:'Intense Quote Char';
+            	mso-style-priority:30;
+            	mso-style-link:'Intense Quote';
+            	font-family:'Calibri',sans-serif;
+            	color:#4472C4;
+            	font-style:italic;}
+            .MsoChpDefault
+            	{mso-style-type:export-only;
+            	font-size:10.0pt;}
+            @page WordSection1
+            	{size:8.5in 11.0in;
+            	margin:1.0in 1.0in 1.0in 1.0in;}
+            div.WordSection1
+            	{page:WordSection1;}
+            --></style><!--[if gte mso 9]><xml>
+            <o:shapedefaults v:ext='edit' spidmax='1026' />
+            </xml><![endif]--><!--[if gte mso 9]><xml>
+            <o:shapelayout v:ext='edit'>
+            <o:idmap v:ext='edit' data='1' />
+            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link='#0563C1' vlink='#954F72' style='word-wrap:break-word'><div class=WordSection1><p class=MsoNormal><o:p>&nbsp;</o:p></p><div style='mso-element:para-border-div;border-top:solid #4472C4 1.0pt;border-left:none;border-bottom:solid #4472C4 1.0pt;border-right:none;padding:10.0pt 0in 10.0pt 0in;margin-left:.6in;margin-right:.6in'><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>An RFE has been open by : "& DataCardValue10.Selected.DisplayName  & "  <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Case number is: " & DataCardValue5.Text &"<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The Application is: "&DataCardValue18.Selected.Value &"<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>This is a: " &  DataCardValue17.Selected.Value &" Issue<o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>The customer is located in : " &  DataCardValue12.Selected.Value &" <o:p></o:p></p><p class=MsoIntenseQuote style='mso-margin-top-alt:.25in;margin-right:0in;margin-bottom:.25in;margin-left:0in'>And the preferred language is: " &  DataCardValue13.Selected.Value & " <o:p></o:p></p>
+            <span style='font-size:13.0pt;font-family:'Segoe UI',sans-serif'><a href='https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47?id="&RFEId&"'>https://apps.preview.powerapps.com/play/172dbdfc-5b35-4d58-808e-67ea43dbb083?tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47<span style='font-size:13.0pt;font-family:'Calibri',sans-serif'>?id="&RFEId&"</span></a></span>
+            </div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>")
+        Text: ="sendMail"
+        Visible: =false
+        X: =410
+        Y: =657
+        ZIndex: =10
+
+    HtmlText2_8 As htmlViewer:
+        Height: =101
+        HoverBorderColor: =HtmlText2_8.BorderColor
+        HtmlText: |-
+            ="<div style='margin:10px;width:120px;height:70px;background: #ff0000;text-align:center; vertical-align:middle;font-size: 20px; font-weight: bold;
+            background: radial-gradient(circle farthest-corner at center center, #17BEBB 0%, #D4F4DD 80%);
+            background: -webkit-radial-gradient(circle farthest-corner at center center, 0%, #D4F4DD 80%);
+            background: -moz-radial-gradient(circle farthest-corner at center center, #ff0000 0%, #00ff00 80%);box-shadow:0 3px 6px 1px  #cc; border-radius:15px'>" & "Submit RFE"  &"</div>"
+        OnSelect: |-
+            =Select(Button4);
+            SubmitForm(Form3)
+        PressedBorderColor: =HtmlText2_8.BorderColor
+        Visible: =If(Toggle1.Value=false,false,true)
+        Width: =156
+        X: =1009
+        Y: =442
+        ZIndex: =12
+
+    RunFlow As button:
+        Fill: =header_1.Fill
+        OnSelect: |-
+            =Set(
+                varAcknowledge,
+                {
+                    Requester: RFERecord.Requester.DisplayName,
+                    RequesterEmail: RFERecord.Requester.Email,
+                    Accepted: RFERecord.AcceptedBy.DisplayName,
+                    AcceptedbyEmail: RFERecord.AcceptedBy.Email,
+                    Case: RFERecord.Title,
+                    AcceptedDate: RFERecord.AcceptedDate,
+                    Accept_Decline:RFERecord.Accept_Decline.Value
+            
+                }
+            );
+            Set(
+                jsonAcknowledge,
+                JSON(
+                    varAcknowledge,
+                    JSONFormat.IgnoreBinaryData
+                )
+            );
+            'AcknowledgeRFEAcceptance-2'.Run(jsonAcknowledge);
+            Trace("sent acknowledgement",TraceSeverity.Information,{ Requester: RFERecord.Requester.DisplayName,
+                    RequesterEmail: RFERecord.Requester.Email,
+                    Accepted: RFERecord.AcceptedBy.DisplayName,
+                    AcceptedbyEmail: RFERecord.AcceptedBy.Email,
+                    Case: RFERecord.Title,
+                    AcceptedDate: RFERecord.AcceptedDate,
+                    Accept_Decline:RFERecord.Accept_Decline.Value
+            })
+        Text: ="runflow"
+        X: =91
+        Y: =697
+        ZIndex: =13
+
+    Label7 As label:
+        Text: =DataCardValue44.Selected.Value
+        X: =1099
+        Y: =380
+        ZIndex: =17
+
+    Group1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =17
+
+        Rectangle3 As rectangle:
+            Height: =768
+            Visible: |-
+                =//If(Toggle1.Value=false,false,true)
+                varAgree
+            Width: =1366
+            ZIndex: =14
+
+        HtmlText3 As htmlViewer:
+            Height: =558
+            HtmlText: |-
+                ="<html>
+                
+                <head>
+                <meta http-equiv=Content-Type content='text/html; charset=windows-1252'>
+                <meta name=Generator content='Microsoft Word 15 (filtered)'>
+                <style>
+                <!--
+                 /* Font Definitions */
+                 @font-face
+                	{font-family:Wingdings;
+                	panose-1:5 0 0 0 0 0 0 0 0 0;}
+                @font-face
+                	{font-family:'Cambria Math';
+                	panose-1:2 4 5 3 5 4 6 3 2 4;}
+                @font-face
+                	{font-family:Calibri;
+                	panose-1:2 15 5 2 2 2 4 3 2 4;}
+                @font-face
+                	{font-family:'Calibri Light';
+                	panose-1:2 15 3 2 2 2 4 3 2 4;}
+                 /* Style Definitions */
+                 p.MsoNormal, li.MsoNormal, div.MsoNormal
+                	{margin-top:0in;
+                	margin-right:0in;
+                	margin-bottom:8.0pt;
+                	margin-left:0in;
+                	line-height:107%;
+                	font-size:11.0pt;
+                	font-family:'Calibri',sans-serif;}
+                h1
+                	{mso-style-link:'Heading 1 Char';
+                	margin-top:12.0pt;
+                	margin-right:0in;
+                	margin-bottom:0in;
+                	margin-left:0in;
+                	line-height:107%;
+                	page-break-after:avoid;
+                	font-size:16.0pt;
+                	font-family:'Calibri Light',sans-serif;
+                	color:#2F5496;
+                	font-weight:normal;}
+                p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+                	{margin-top:0in;
+                	margin-right:0in;
+                	margin-bottom:8.0pt;
+                	margin-left:.5in;
+                	line-height:107%;
+                	font-size:11.0pt;
+                	font-family:'Calibri',sans-serif;}
+                p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+                	{margin-top:0in;
+                	margin-right:0in;
+                	margin-bottom:0in;
+                	margin-left:.5in;
+                	line-height:107%;
+                	font-size:11.0pt;
+                	font-family:'Calibri',sans-serif;}
+                p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+                	{margin-top:0in;
+                	margin-right:0in;
+                	margin-bottom:0in;
+                	margin-left:.5in;
+                	line-height:107%;
+                	font-size:11.0pt;
+                	font-family:'Calibri',sans-serif;}
+                p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+                	{margin-top:0in;
+                	margin-right:0in;
+                	margin-bottom:8.0pt;
+                	margin-left:.5in;
+                	line-height:107%;
+                	font-size:11.0pt;
+                	font-family:'Calibri',sans-serif;}
+                span.Heading1Char
+                	{mso-style-name:'Heading 1 Char';
+                	mso-style-link:'Heading 1';
+                	font-family:'Calibri Light',sans-serif;
+                	color:#2F5496;}
+                .MsoChpDefault
+                	{font-family:'Calibri',sans-serif;}
+                .MsoPapDefault
+                	{margin-bottom:8.0pt;
+                	line-height:107%;}
+                @page WordSection1
+                	{size:8.5in 11.0in;
+                	margin:1.0in 1.0in 1.0in 1.0in;}
+                div.WordSection1
+                	{page:WordSection1;}
+                 /* List Definitions */
+                 ol
+                	{margin-bottom:0in;}
+                ul
+                	{margin-bottom:0in;}
+                -->
+                </style>
+                
+                </head>
+                
+                <body lang=EN-US link=blue vlink='#954F72' style='word-wrap:break-word'>
+                
+                <div class=WordSection1>
+                
+                <h1>Overview of the issue:</h1>
+                
+                <p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Customer’s explanation of the issue</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Include a summary of the issue in your words.</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>App id and Flow name/url should also go in this section.</p>
+                
+                <p class=MsoListParagraphCxSpLast style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>If an ICM was opened be sure it’s been added to the appropriate
+                form in DFM </p>
+                
+                <h1>Trouble shooting</h1>
+                
+                <p class=MsoNormal>List all the actions and steps you’ve taken. </p>
+                
+                <p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Include Kusto queries</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Unify searches.</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Are there open or closed collaborations with other teams. If so,
+                what is the status.</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in;line-height:105%'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Screen shots that are not included in the case.</p>
+                
+                <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in;line-height:105%'><span
+                style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span></span>Repro actions </p>
+                
+                <p class=MsoListParagraphCxSpLast>&nbsp;</p>
+                
+                <p class=MsoNormal>&nbsp;</p>
+                
+                <p class=MsoNormal>&nbsp;</p>
+                
+                <p class=MsoNormal>&nbsp;</p>
+                
+                <p class=MsoNormal>&nbsp;</p>
+                
+                </div>
+                
+                </body>
+                
+                </html>
+                "
+            Visible: |-
+                =//If(Toggle1.Value=false,false,true)
+                varAgree
+            Width: =1366
+            Y: =46
+            ZIndex: =15
+
+        Button1 As button:
+            Fill: =RGBA(221, 79, 14, 1)
+            OnSelect: =Set(varAgree,false)
+            RadiusBottomLeft: =45
+            RadiusBottomRight: =45
+            RadiusTopLeft: =45
+            RadiusTopRight: =45
+            Text: ="Agreed"
+            Visible: |-
+                =//If(Toggle1.Value=false,false,true)
+                varAgree
+            X: =617
+            Y: =632
+            ZIndex: =16
+

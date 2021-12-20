@@ -1,0 +1,63 @@
+{
+  "ComponentAllowCustomization": true,
+  "ComponentChangedSinceFileImport": true,
+  "ComponentManifest": {
+    "AllowAccessToGlobals": false,
+    "AllowCustomization": true,
+    "Description": "",
+    "Name": "footer",
+    "TemplateGuid": "e3c07055dc3d4a95b223b3bdb1d403da"
+  },
+  "ComponentType": "CanvasComponent",
+  "CustomGroupControlTemplateName": "",
+  "CustomProperties": [
+    {
+      "Category": 0,
+      "DisplayName": "footerWidth",
+      "Hidden": false,
+      "Name": "footerWidth",
+      "PropertyDataTypeKey": "Number",
+      "Tooltip": "FooterWidth",
+      "Type": "{\"Version\":\"1.320\",\"Type\":{\"Name\":\"Root\",\"Kind\":\"Number\",\"EnumString\":\"\",\"Type\":[]}}"
+    },
+    {
+      "Category": 0,
+      "DisplayName": "footerFill",
+      "Hidden": false,
+      "Name": "footerFill",
+      "PropertyDataTypeKey": "Color",
+      "Tooltip": "Fill ",
+      "Type": "{\"Version\":\"1.320\",\"Type\":{\"Name\":\"Root\",\"Kind\":\"Color\",\"EnumString\":\"\",\"Type\":[]}}"
+    },
+    {
+      "Category": 0,
+      "DisplayName": "Xfooter",
+      "Hidden": false,
+      "Name": "Xfooter",
+      "PropertyDataTypeKey": "Number",
+      "Tooltip": "A custom property",
+      "Type": "{\"Version\":\"1.320\",\"Type\":{\"Name\":\"Root\",\"Kind\":\"Number\",\"EnumString\":\"\",\"Type\":[]}}"
+    },
+    {
+      "Category": 0,
+      "DisplayName": "Custom property 1",
+      "Hidden": false,
+      "Name": "htmlText",
+      "PropertyDataTypeKey": "String",
+      "Tooltip": "htmlText",
+      "Type": "{\"Version\":\"1.320\",\"Type\":{\"Name\":\"Root\",\"Kind\":\"String\",\"EnumString\":\"\",\"Type\":[]}}"
+    }
+  ],
+  "FirstParty": true,
+  "Id": "http://microsoft.com/appmagic/Component",
+  "IsComponentLocked": false,
+  "IsComponentTemplate": true,
+  "IsCustomGroupControlTemplate": false,
+  "IsPcfControl": false,
+  "IsPremiumPcfControl": false,
+  "IsWidgetTemplate": false,
+  "LastModifiedTimestamp": "637756315245013048",
+  "Name": "e3c07055dc3d4a95b223b3bdb1d403da",
+  "OverridableProperties": {},
+  "Version": "637702503618353890"
+}

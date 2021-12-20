@@ -1,0 +1,205 @@
+Screen2 As screen:
+
+    HtmlText1 As htmlViewer:
+        Height: =406
+        HtmlText: =mailbody
+        Width: =379
+        X: =48
+        Y: =228
+        ZIndex: =1
+
+    Label5 As label:
+        Height: =105
+        Text: |-
+            =//"haroldk@microsoft.com;taskar@microsoft.com;doverona@microsoft.com"
+            "PoweEsc@microsoft.com"
+        Width: =488
+        X: =20
+        Y: =8
+        ZIndex: =2
+
+    Button5 As button:
+        OnSelect: =Office365Outlook.SendEmailV2("PoweEsc@microsoft.com", varItem.Case,mailbody)
+        Text: ="Button"
+        X: =902
+        Y: =88
+        ZIndex: =3
+
+    Button8 As button:
+        OnSelect: |-
+            =Set(varApprover,{Claims:"i:0#.f|membership|" & varUser.Email,DisplayName:varUser.FullName,Email:varUser.Email})
+        Text: ="Button"
+        X: =157
+        Y: =685
+        ZIndex: =6
+
+    HtmlText4 As htmlViewer:
+        Height: =453
+        HtmlText: |-
+            ="<html>
+            
+            <head>
+            <meta http-equiv=Content-Type content='text/html; charset=windows-1252'>
+            <meta name=Generator content='Microsoft Word 15 (filtered)'>
+            <style>
+            <!--
+             /* Font Definitions */
+             @font-face
+            	{font-family:Wingdings;
+            	panose-1:5 0 0 0 0 0 0 0 0 0;}
+            @font-face
+            	{font-family:'Cambria Math';
+            	panose-1:2 4 5 3 5 4 6 3 2 4;}
+            @font-face
+            	{font-family:Calibri;
+            	panose-1:2 15 5 2 2 2 4 3 2 4;}
+            @font-face
+            	{font-family:'Calibri Light';
+            	panose-1:2 15 3 2 2 2 4 3 2 4;}
+             /* Style Definitions */
+             p.MsoNormal, li.MsoNormal, div.MsoNormal
+            	{margin-top:0in;
+            	margin-right:0in;
+            	margin-bottom:8.0pt;
+            	margin-left:0in;
+            	line-height:107%;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            h1
+            	{mso-style-link:'Heading 1 Char';
+            	margin-top:12.0pt;
+            	margin-right:0in;
+            	margin-bottom:0in;
+            	margin-left:0in;
+            	line-height:107%;
+            	page-break-after:avoid;
+            	font-size:16.0pt;
+            	font-family:'Calibri Light',sans-serif;
+            	color:#2F5496;
+            	font-weight:normal;}
+            p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+            	{margin-top:0in;
+            	margin-right:0in;
+            	margin-bottom:8.0pt;
+            	margin-left:.5in;
+            	line-height:107%;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+            	{margin-top:0in;
+            	margin-right:0in;
+            	margin-bottom:0in;
+            	margin-left:.5in;
+            	line-height:107%;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+            	{margin-top:0in;
+            	margin-right:0in;
+            	margin-bottom:0in;
+            	margin-left:.5in;
+            	line-height:107%;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+            	{margin-top:0in;
+            	margin-right:0in;
+            	margin-bottom:8.0pt;
+            	margin-left:.5in;
+            	line-height:107%;
+            	font-size:11.0pt;
+            	font-family:'Calibri',sans-serif;}
+            span.Heading1Char
+            	{mso-style-name:'Heading 1 Char';
+            	mso-style-link:'Heading 1';
+            	font-family:'Calibri Light',sans-serif;
+            	color:#2F5496;}
+            .MsoChpDefault
+            	{font-family:'Calibri',sans-serif;}
+            .MsoPapDefault
+            	{margin-bottom:8.0pt;
+            	line-height:107%;}
+            @page WordSection1
+            	{size:8.5in 11.0in;
+            	margin:1.0in 1.0in 1.0in 1.0in;}
+            div.WordSection1
+            	{page:WordSection1;}
+             /* List Definitions */
+             ol
+            	{margin-bottom:0in;}
+            ul
+            	{margin-bottom:0in;}
+            -->
+            </style>
+            
+            </head>
+            
+            <body lang=EN-US link=blue vlink='#954F72' style='word-wrap:break-word'>
+            
+            <div class=WordSection1>
+            
+            <h1>Overview of the issue:</h1>
+            
+            <p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Customer’s explanation of the issue</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Include a summary of the issue in your words.</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>App id and Flow name/url should also go in this section.</p>
+            
+            <p class=MsoListParagraphCxSpLast style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>If an ICM was opened be sure it’s been added to the appropriate
+            form in DFM </p>
+            
+            <h1>Trouble shooting</h1>
+            
+            <p class=MsoNormal>List all the actions and steps you’ve taken. </p>
+            
+            <p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Include Kusto queries</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Unify searches.</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Are there open or closed collaborations with other teams. If so,
+            what is the status.</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in;line-height:105%'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Screen shots that are not included in the case.</p>
+            
+            <p class=MsoListParagraphCxSpMiddle style='text-indent:-.25in;line-height:105%'><span
+            style='font-family:Symbol'>·<span style='font:7.0pt 'Times New Roman''>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span></span>Repro actions </p>
+            
+            <p class=MsoListParagraphCxSpLast>&nbsp;</p>
+            
+            <p class=MsoNormal>&nbsp;</p>
+            
+            <p class=MsoNormal>&nbsp;</p>
+            
+            <p class=MsoNormal>&nbsp;</p>
+            
+            <p class=MsoNormal>&nbsp;</p>
+            
+            </div>
+            
+            </body>
+            
+            </html>
+            "
+        Width: =883
+        X: =48
+        Y: =170
+        ZIndex: =7
+

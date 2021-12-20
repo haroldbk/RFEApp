@@ -1,0 +1,51 @@
+header As CanvasComponent:
+    background: =YellowGreen
+    DestinationScreen: =App.ActiveScreen
+    Fill: =header.background
+    headerText: ="Text"
+    headShot: =SampleImage
+    Height: =100
+    iconVisible: =true
+    Width: =1366
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    Icon2 As icon.ChevronLeft:
+        Height: =52
+        Icon: =Icon.ChevronLeft
+        OnSelect: =Navigate(header.DestinationScreen,ScreenTransition.Cover)
+        Visible: =header.iconVisible
+        Width: =47
+        X: =35
+        Y: =20
+        ZIndex: =2
+
+    Image1 As image:
+        Height: =81
+        Image: =header.headShot
+        RadiusBottomLeft: =90
+        RadiusBottomRight: =90
+        RadiusTopLeft: =90
+        RadiusTopRight: =90
+        Width: =93
+        X: =1259
+        Y: =header.Height/2-(Self.Height/2)
+        ZIndex: =3
+
+    Label3 As label:
+        Align: =Center
+        FontWeight: =Bold
+        Size: =20
+        Text: =header.headerText
+        Width: =364
+        X: =802
+        Y: =32
+        ZIndex: =4
+
+    Image3 As image:
+        Image: ='Microsoft-Power-Platform-overview'
+        Width: =295
+        X: =491
+        ZIndex: =6
+

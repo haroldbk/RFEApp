@@ -1,0 +1,9 @@
+[
+  {
+    "AddinConnectorId": "7cbc2931-2df6-4389-baef-3bfe9b011ee2",
+    "AddinId": "6d1f157d-95bf-406d-b65d-cfd3240f724e",
+    "Name": "AcknowledgeRFEAcceptance",
+    "ServiceKind": "AddinWadl",
+    "Type": "ServiceInfo"
+  }
+]
